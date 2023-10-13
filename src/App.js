@@ -3,14 +3,26 @@ import { useState } from 'react';
 
 function App() {
   const [todoList, setTodoList] = useState([]);
-  const [newTask, setNewTask] = useState('');
+  const [newTask, setNewTask] = useState({});
 
   const handleChange = (event) => {
     setNewTask(event.target.value);
   };
 
   const addTask = () => {
-    setTodoList([...todoList, newTask]);
+    const task = {
+      id: todoList.length === 0 ? 1 : todoList[todoList.length - 1].id + 1,
+      taskName: newTask,
+    };
+    setTodoList([...todoList, task]);
+  };
+
+  const deleteTask = (id) => {
+    setTodoList(
+      todoList.filter((task) => {
+        return task.id !== id;
+      })
+    );
   };
 
   return (
@@ -19,7 +31,12 @@ function App() {
       <button onClick={addTask}>Add Task</button>
       <div className='list'>
         {todoList.map((task) => {
-          return <h1>{task}</h1>;
+          return (
+            <div>
+              <h1>{task.taskName}</h1>
+              <button onClick={() => deleteTask(task.id)}>x</button>
+            </div>
+          );
         })}
       </div>
     </div>
