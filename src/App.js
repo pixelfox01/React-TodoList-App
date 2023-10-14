@@ -14,8 +14,17 @@ function App() {
     const task = {
       id: todoList.length === 0 ? 1 : todoList[todoList.length - 1].id + 1,
       taskName: newTask,
+      completed: false,
     };
     setTodoList([...todoList, task]);
+  };
+
+  const completeTask = (id) => {
+    setTodoList(
+      todoList.map((task) => {
+        return task.id === id ? { ...task, completed: true } : task;
+      })
+    );
   };
 
   const deleteTask = (id) => {
@@ -35,8 +44,10 @@ function App() {
           return (
             <Task
               id={task.id}
+              completed={task.completed}
               taskName={task.taskName}
               deleteTask={deleteTask}
+              completeTask={completeTask}
             />
           );
         })}
